@@ -2,7 +2,59 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<body>
+
+    <div class="text-center">
+        <form asp-action="Create" asp-controller="Home">
+            <button class="btn btn-success" type="submit"> Create</button>
+        </form>
+    </div>
+    <br />
+
+    <div class="text-center">
+        <div class="container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="display:none;">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var @item in @ViewBag.UserList)
+                    {
+                        <tr>
+                            <td style="display:none;">@item._id</td>
+                            <td>@item.name</td>
+                            <td>@item.email</td>
+                            <td>@item.phone</td>
+                            <td>@item.address</td>
+                            <td>@item.dateIn</td>
+                            <td>
+                                <div class="d-grid gap-2 col-6 mx-auto">
+                                    <form asp-action="Edit" asp-controller="Home" asp-route-id="@item._id">
+                                        <button class="btn btn-primary btn-sm" type="submit">Edit</button>
+                                    </form>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-grid gap-2 col-6 mx-auto">
+                                    <form asp-action="Delete" asp-controller="Home" asp-route-id="@item._id">
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>

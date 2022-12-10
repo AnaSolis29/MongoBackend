@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Delete</h1>
+</div>
+
+@foreach (var @item in @ViewBag.userListID)
+{
+    <div class="card shadow-sm text-center" style="width:252px">
+        <div class="card-body">
+            <form asp-controller="Home" asp-action="DeleteUser" method="POST">
+                <hr />
+                <div class="form-floating mb-3">
+                    <input value="@item._id" name="txtId" type="text" class="form-control" id="floatingInput" placeholder="ID" readonly required>
+                    <label for="floatingInput">ID</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input value="@item.name" name="txtName" type="text" class="form-control" id="floatingInput" placeholder="Name" readonly required>
+                    <label for="floatingInput">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input value="@item.email" name="txtEmail" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" readonly required>
+                    <label for="floatingInput">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input value="@item.phone" name="txtPhone" type="text" class="form-control" id="floatingInput" placeholder="Phone" readonly required>
+                    <label for="floatingInput">Phone</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input value="@item.address" name="txtAddress" type="text" class="form-control" id="floatingInput" placeholder="Address" readonly required>
+                    <label for="floatingInput">Address</label>
+                </div>
+                <br />
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Delete User
+                    </button>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete user</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Seguro desea eliminarlo? @item.name
+                            </div>
+                            <div class="modal-footer">
+                                <a href="DeleteUser?@item._id">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="text-center">
+                <form asp-action="Index" asp-controller="Home">
+                    <button class="btn btn-success" type="submit">Home</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+}

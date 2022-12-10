@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MongoBackend.Models;
 using System.Diagnostics;
+using MongoBackend.DatabaseHelper;
+using System.Xml.Linq;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Microsoft.VisualBasic;
+using MongoBackend.Models;
 
-namespace MongoBackend.Controllers
+namespace AsignacionMonogo.Controllers
 {
     public class HomeController : Controller
     {
@@ -15,8 +20,88 @@ namespace MongoBackend.Controllers
 
         public IActionResult Index()
         {
+            MongoBackend.DatabaseHelper.Database db = new MongoBackend.DatabaseHelper.Database();
+
+            ViewBag.UserList = db.getUsers();
+
             return View();
         }
+
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult SaveUser(string txtName, string txtEmail, string txtPhone, string txtAddress)
+        {
+            MongoBackend.DatabaseHelper.Database db = new MongoBackend.DatabaseHelper.Database();
+
+            db.insertUser(new Users()
+            {
+                name = txtName,
+                email = txtEmail,
+                phone = Convert.ToInt32(txtPhone),
+                address = txtAddress,
+                dateIn = DateTime.Now
+            });
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Edit(string id)
+        {
+            MongoBackend.DatabaseHelper.Database db = new MongoBackend.DatabaseHelper.Database();
+
+            ViewBag.userListID = db.getUsersID(id);
+
+            return View();
+        }
+
+        public IActionResult UpdateUser(string txtId, string txtName, string txtEmail, string txtPhone, string txtAddress)
+        {
+            MongoClient mongoClient = new MongoClient("mongodb+srv://AnaSolis:Admin1234@cluster0.xf0cuge.mongodb.net/test");
+
+            IMongoDatabase db = mongoClient.GetDatabase("Asignacion3");
+
+            var filter = Builders<Users>.Filter.Eq("_id", ObjectId.Parse(txtId));
+            var update = Builders<Users>.Update
+                .Set("name", txtName)
+                .Set("email", txtEmail)
+                .Set("phone", txtPhone)
+                .Set("address", txtAddress)
+                .Set("dateIn", DateTime.Now);
+            var users = db.GetCollection<Users>("Users").UpdateOne(filter, update);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Delete(string id)
+        {
+            MongoBackend.DatabaseHelper.Database db = new MongoBackend.DatabaseHelper.Database();
+
+            ViewBag.userListID = db.getUsersID(id);
+
+            return View();
+        }
+
+        public IActionResult DeleteUser(String txtId)
+        {
+            MongoClient mongoClient = new MongoClient("mongodb+srv://AnaSolis:Admin1234@cluster0.xf0cuge.mongodb.net/test");
+
+            IMongoDatabase db = mongoClient.GetDatabase("MongoBackend");
+
+            var users = db.GetCollection<BsonDocument>("Users");
+
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(txtId));
+
+            users.DeleteOne(filter);
+
+            return RedirectToAction("Index", "Home");
+        }
+
 
         public IActionResult Privacy()
         {

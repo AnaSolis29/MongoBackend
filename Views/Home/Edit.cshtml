@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit</h1>
+</div>
+
+<body>
+    <div class="card">
+        <div class="text-center">
+
+            @foreach (var @item in @ViewBag.userListID)
+            {
+                <div class="card shadow-sm" style="width:252px">
+                    <div class="card-body">
+                        <form asp-controller="Home" asp-action="UpdateUser" method="POST">
+                            <hr />
+                            <div class="form-floating mb-3">
+                                <input value="@item._id" name="txtId" type="text" class="form-control" id="floatingInput" placeholder="ID" readonly required>
+                                <label for="floatingInput">ID</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input value="@item.name" name="txtName" type="text" class="form-control" id="floatingInput" placeholder="Name" required>
+                                <label for="floatingInput">Name</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input value="@item.email" name="txtEmail" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+                                <label for="floatingInput">Email</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input value="@item.phone" name="txtPhone" type="text" class="form-control" id="floatingInput" placeholder="Phone" required>
+                                <label for="floatingInput">Phone</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input value="@item.address" name="txtAddress" type="text" class="form-control" id="floatingInput" placeholder="Address" required>
+                                <label for="floatingInput">Address</label>
+                            </div>
+                            <br />
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalUpdate">
+                                    Update User
+                                </button>
+                            </div>
+                            <br />
+
+                            <!-- Modal Update -->
+                            <div class="modal fade" id="exampleModalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit user</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Realmente desea editarlo? @item.name
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br />
+            }
+        </div>
+    </div>
+    <div class="text-center">
+        <form asp-action="Index" asp-controller="Home">
+            <button class="btn btn-success" type="submit">Home</button>
+        </form>
+    </div>
+    <hr />
+
+</body>
